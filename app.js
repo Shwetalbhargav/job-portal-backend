@@ -26,15 +26,15 @@ mongoose.connect(process.env.MONGO_URI).then(() => console.log('MongoDB connecte
 const connectDatabases = async () => {
     try {
         // Internal Database Connection
-        const internalDB = await mongoose.createConnection(process.env.INTERNAL_DB_URI);
-        console.log('Internal MongoDB connected');
+        /*const internalDB = await mongoose.createConnection(process.env.INTERNAL_DB_URI);
+        console.log('Internal MongoDB connected');*/
 
         // External Database Connection (MongoDB Atlas)
         const externalDB = await mongoose.createConnection(process.env.EXTERNAL_DB_URI);
         console.log('External MongoDB (Atlas) connected');
 
         // Example: Making connections available to routes
-        app.locals.internalDB = internalDB;
+       /* app.locals.internalDB = internalDB;*/
         app.locals.externalDB = externalDB;
     } catch (err) {
         console.error('Error connecting to databases:', err);
