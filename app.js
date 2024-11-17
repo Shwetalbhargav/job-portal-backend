@@ -18,9 +18,30 @@ app.use(cors());
 app.use('/api/applicants', applicantRoutes);
 app.use('/api/employers', employerRoutes);
 
-// MongoDB Connection
+/*
 mongoose.connect(process.env.MONGO_URI).then(() => console.log('MongoDB connected'))
-  .catch(err => console.error(err));
+  .catch(err => console.error(err));*/
+
+  // MongoDB Connection
+const connectDatabases = async () => {
+    try {
+        // Internal Database Connection
+        const internalDB = await mongoose.createConnection(process.env.INTERNAL_DB_URI);
+        console.log('Internal MongoDB connected');
+
+        // External Database Connection (MongoDB Atlas)
+        const externalDB = await mongoose.createConnection(process.env.EXTERNAL_DB_URI);
+        console.log('External MongoDB (Atlas) connected');
+
+        // Example: Making connections available to routes
+        app.locals.internalDB = internalDB;
+        app.locals.externalDB = externalDB;
+    } catch (err) {
+        console.error('Error connecting to databases:', err);
+    }
+};
+
+connectDatabases();
 
 // File Upload Configuration (Multer)
 const storage = multer.diskStorage({
